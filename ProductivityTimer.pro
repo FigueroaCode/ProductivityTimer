@@ -24,8 +24,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    countdownpage.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    countdownpage.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    countdownpage.ui

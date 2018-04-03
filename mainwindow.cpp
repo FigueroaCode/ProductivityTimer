@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "countdownpage.h"
+
 #include <QDebug>
+
+CountDownPage *countDownPage = NULL;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -393,4 +397,10 @@ void MainWindow::on_prepTimeEdit_editingFinished()
 void MainWindow::on_prepTimeEdit_returnPressed()
 {
     updateTotalTime(&totalTimeInSec,workTimeEdit,restTimeEdit,prepTimeEdit, totalTimeLabel);
+}
+//----------- Start Button -------------------//
+void MainWindow::on_startButton_clicked()
+{
+    countDownPage = new CountDownPage();
+    countDownPage->show();
 }

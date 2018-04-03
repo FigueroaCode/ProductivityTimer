@@ -14,6 +14,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    int getReps();
+    QString getWorkTime();
+    QString getRestTime();
+    QString getPrepTime();
+    QString getTotalTime();
+
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
@@ -45,6 +51,8 @@ private slots:
     void on_prepTimeEdit_editingFinished();
 
     void on_prepTimeEdit_returnPressed();
+
+    void on_startButton_clicked();
 
 private:
     Ui::MainWindow *ui;

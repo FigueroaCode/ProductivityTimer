@@ -253,6 +253,11 @@
         <layout class="QVBoxLayout" name="prepTimeVerticalLayout">
          <item>
           <widget class="QLabel" name="prepTitleLabel">
+           <property name="font">
+            <font>
+             <pointsize>20</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Prep Time</string>
            </property>
@@ -391,6 +396,14 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuSave_Timer">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="actionSave_Timer"/>
+    <addaction name="actionLoad_Timer"/>
+   </widget>
+   <addaction name="menuSave_Timer"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -401,6 +414,16 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionSave_Timer">
+   <property name="text">
+    <string>Save Timer</string>
+   </property>
+  </action>
+  <action name="actionLoad_Timer">
+   <property name="text">
+    <string>Load Timer</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
