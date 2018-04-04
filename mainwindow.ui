@@ -33,7 +33,7 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -370,22 +370,8 @@
      </item>
     </layout>
    </widget>
-   <zorder>horizontalLayoutWidget</zorder>
-   <zorder>repsTimeEdit</zorder>
-   <zorder>repsLabel</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget_4</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>workTimeLabel</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>pushButton</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>layoutWidget_2</zorder>
-   <zorder>layoutWidget_3</zorder>
-   <zorder>layoutWidget_5</zorder>
    <zorder>startButton</zorder>
-   <zorder>totalTimeLabel</zorder>
-   <zorder>layoutWidget_4</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -396,14 +382,14 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuSave_Timer">
+   <widget class="QMenu" name="menuSave_Interval">
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="actionSave_Timer"/>
-    <addaction name="actionLoad_Timer"/>
+    <addaction name="actionSave_Interval"/>
+    <addaction name="actionLoad_Interval"/>
    </widget>
-   <addaction name="menuSave_Timer"/>
+   <addaction name="menuSave_Interval"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -414,12 +400,12 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionSave_Timer">
+  <action name="actionSave_Interval">
    <property name="text">
     <string>Save Interval</string>
    </property>
   </action>
-  <action name="actionLoad_Timer">
+  <action name="actionLoad_Interval">
    <property name="text">
     <string>Load Interval</string>
    </property>

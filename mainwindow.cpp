@@ -3,6 +3,7 @@
 #include "countdownpage.h"
 
 #include <QDebug>
+#include <QTime>
 
 CountDownPage *countDownPage = NULL;
 
@@ -70,41 +71,7 @@ void MainWindow::on_repsDownBtn_clicked()
 //------------- Helper Methods ----------------//
 void updateTimeText(QLineEdit *timeEdit,int hours, int minutes, int seconds)
 {
-    QString time;
-    if(minutes < 10 && hours < 10 && seconds < 10)
-    {
-        time = QString("0%1:0%2:0%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else if(hours < 10 && minutes < 10)
-    {
-        time = QString("0%1:0%2:%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }
-    else if(hours < 10 && seconds < 10)
-    {
-         time = QString("0%1:%2:0%3").arg(hours).arg(minutes).arg(seconds);
-         timeEdit->setText(time);
-    }else if(minutes < 10 && seconds < 10)
-    {
-        time = QString("%1:%2:0%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else if(minutes < 10)
-    {
-        time = QString("%1:0%2:%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else if(seconds < 10)
-    {
-        time = QString("%1:%2:0%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else if(hours < 10)
-    {
-        time = QString("0%1:%2:%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else
-    {
-        time = QString("%1:%2:%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }
+    timeEdit->setText(QTime(hours,minutes,seconds).toString(Qt::TextDate));
 }
 
 void updateTimeLabel(QLabel *timeEdit,int totalTime)
@@ -113,42 +80,7 @@ void updateTimeLabel(QLabel *timeEdit,int totalTime)
     int currentTimeInSec = (totalTime) - (hours * 3600);
     int minutes = currentTimeInSec / 60;
     int seconds = currentTimeInSec - (minutes * 60);
-
-    QString time;
-    if(minutes < 10 && hours < 10 && seconds < 10)
-    {
-        time = QString("0%1:0%2:0%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else if(hours < 10 && minutes < 10)
-    {
-        time = QString("0%1:0%2:%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }
-    else if(hours < 10 && seconds < 10)
-    {
-         time = QString("0%1:%2:0%3").arg(hours).arg(minutes).arg(seconds);
-         timeEdit->setText(time);
-    }else if(minutes < 10 && seconds < 10)
-    {
-        time = QString("%1:%2:0%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else if(minutes < 10)
-    {
-        time = QString("%1:0%2:%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else if(seconds < 10)
-    {
-        time = QString("%1:%2:0%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else if(hours < 10)
-    {
-        time = QString("0%1:%2:%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }else
-    {
-        time = QString("%1:%2:%3").arg(hours).arg(minutes).arg(seconds);
-        timeEdit->setText(time);
-    }
+    timeEdit->setText(QTime(hours,minutes,seconds).toString(Qt::TextDate));
 }
 
 int getHours(QStringList timeList)
@@ -401,43 +333,25 @@ void MainWindow::on_prepTimeEdit_returnPressed()
 //----------- Start Button -------------------//
 void MainWindow::on_startButton_clicked()
 {
-    countDownPage = new CountDownPage();
-    //pass data
-    countDownPage->setTitleText("Get Ready!");
-    countDownPage->setRepsCount(repsEdit->text().toInt());
-    countDownPage->setCountDownText(prepTimeEdit->text());
-    countDownPage->setButtonState("PAUSE");
-    countDownPage->setPrepTime(prepTimeEdit->text());
-    countDownPage->setWorkTime(workTimeEdit->text());
-    countDownPage->setRestTime(restTimeEdit->text());
-    countDownPage->setTotalTime(totalTimeLabel->text());
-    countDownPage->setCurrentTime(prepTimeEdit->text());
-    //Open Window
-    countDownPage->show();
+    if(totalTimeInSec > 0 && repsEdit->text().toInt() > 0)
+    {
+        countDownPage = new CountDownPage();
+        //pass data
+        countDownPage->setTitleText("Get Ready!");
+        countDownPage->setRepsCount(repsEdit->text().toInt());
+        countDownPage->setCountDownText(prepTimeEdit->text());
+        countDownPage->setButtonState("PAUSE");
+        countDownPage->setPrepTime(prepTimeEdit->text());
+        countDownPage->setWorkTime(workTimeEdit->text());
+        countDownPage->setRestTime(restTimeEdit->text());
+        countDownPage->setTotalTime(totalTimeLabel->text());
+        countDownPage->setCurrentTime(prepTimeEdit->text());
+        //Open Window
+        countDownPage->show();
+    }
 }
 
-//----------------------- Getter Methods -----------------------//
-int MainWindow::getReps()
+void MainWindow::on_actionSave_Interval_triggered()
 {
-    return repsEdit->text().toInt();
-}
-
-QString MainWindow::getWorkTime()
-{
-    return workTimeEdit->text();
-}
-
-QString MainWindow::getRestTime()
-{
-    return restTimeEdit->text();
-}
-
-QString MainWindow::getPrepTime()
-{
-    return prepTimeEdit->text();
-}
-
-QString MainWindow::getTotalTime()
-{
-    return totalTimeLabel->text();
+    qDebug() << "should print";
 }
