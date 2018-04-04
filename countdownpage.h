@@ -61,6 +61,7 @@ private:
     int getMinutes(QStringList timeList);
     int getSeconds(QStringList timeList);
     void updateRepLabel(int rep);
+    void setUp();
 };
 
 #endif // COUNTDOWNPAGE_H

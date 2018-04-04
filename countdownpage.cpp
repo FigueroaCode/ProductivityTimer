@@ -16,19 +16,7 @@ CountDownPage::CountDownPage(QWidget *parent) :
     repsLabel = ui->repsLabel;
     countDownLabel = ui->countDownLabel;
     pauseResumeBtn = ui->pauseResumeButton;
-    currentRestRep = 0;
-    currentWorkRep = 0;
-    currentTime = prepTime;
-    paused = false;
-    inWork = false;
-    prepDone = false;
-    //Hide reps label
-    repsLabel->setText(QString::number(currentWorkRep)+"/"+QString::number(repsCount));
-    repsLabel->hide();
-    //Set up timer to alert every second
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(1000);
+    setUp();
 }
 
 CountDownPage::~CountDownPage()
@@ -51,7 +39,7 @@ void CountDownPage::update()
             prepDone = true;
             repsLabel->show();
         }
-        //Check this only if currentRestRep is less than totalReps-------TODO--------
+        //Check this only if currentRestRep is less than totalReps
         if(currentRestRep < repsCount && inWork)
         {
          inWork = false;
@@ -70,7 +58,11 @@ void CountDownPage::update()
           updateRepLabel(currentWorkRep);
         }else
         {
+            //Change title to finished
+            titleLabel->setText("All Done, Great Job!");
+            repsLabel->hide();
             //handle finished state
+            timer->stop();
         }
     }else
     {
@@ -227,9 +219,35 @@ void CountDownPage::on_pauseResumeButton_clicked()
 
 }
 //----------------------TODO--------------------
+void CountDownPage::setUp()
+{
+    //set current rep to 0
+    currentRestRep = 0;
+    currentWorkRep = 0;
+    //Set title to Get Ready!
+    titleLabel->setText("Get Ready!");
+    //set current time to prep time
+    currentTime = prepTime;
+    //set paused to false
+    paused = false;
+    //set inwork to false
+    inWork = false;
+    //set prep done to false
+    prepDone = false;
+    //Hide reps label
+    repsLabel->setText(QString::number(currentWorkRep)+"/"+QString::number(repsCount));
+    repsLabel->hide();
+    //Set up timer to alert every second
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->start(1000);
+
+}
+
 void CountDownPage::on_restartButton_clicked()
 {
     //RESTART from prep stage
+    setUp();
 }
 
 void CountDownPage::on_closeButton_clicked()
