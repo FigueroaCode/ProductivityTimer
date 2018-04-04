@@ -402,5 +402,42 @@ void MainWindow::on_prepTimeEdit_returnPressed()
 void MainWindow::on_startButton_clicked()
 {
     countDownPage = new CountDownPage();
+    //pass data
+    countDownPage->setTitleText("Get Ready!");
+    countDownPage->setRepsCount(repsEdit->text().toInt());
+    countDownPage->setCountDownText(prepTimeEdit->text());
+    countDownPage->setButtonState("PAUSE");
+    countDownPage->setPrepTime(prepTimeEdit->text());
+    countDownPage->setWorkTime(workTimeEdit->text());
+    countDownPage->setRestTime(restTimeEdit->text());
+    countDownPage->setTotalTime(totalTimeLabel->text());
+    countDownPage->setCurrentTime(prepTimeEdit->text());
+    //Open Window
     countDownPage->show();
+}
+
+//----------------------- Getter Methods -----------------------//
+int MainWindow::getReps()
+{
+    return repsEdit->text().toInt();
+}
+
+QString MainWindow::getWorkTime()
+{
+    return workTimeEdit->text();
+}
+
+QString MainWindow::getRestTime()
+{
+    return restTimeEdit->text();
+}
+
+QString MainWindow::getPrepTime()
+{
+    return prepTimeEdit->text();
+}
+
+QString MainWindow::getTotalTime()
+{
+    return totalTimeLabel->text();
 }
