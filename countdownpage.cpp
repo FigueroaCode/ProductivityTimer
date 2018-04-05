@@ -85,11 +85,12 @@ void CountDownPage::update()
             }
         }
         currentTime = QTime(hours,minutes,seconds).toString(Qt::TextDate);
+
+        //update total time
+        updateTotalTime();
     }
     //Set new time
     setCountDownText(currentTime);
-    //update total time
-    updateTotalTime();
 }
 
 void CountDownPage::updateTotalTime()
@@ -294,6 +295,7 @@ void CountDownPage::on_closeButton_clicked()
     this->close();
 }
 
+
 void CountDownPage::on_totalTimeDisplayButton_clicked()
 {
     if(totalTimeDisplayed)
@@ -303,7 +305,7 @@ void CountDownPage::on_totalTimeDisplayButton_clicked()
         totalTimeTitleLabel->hide();
         totalTimeLeftLabel->hide();
         //change icon on button to point to the right
-        totalTimeLeftButton->setArrowType(Qt::RightArrow);
+        totalTimeLeftButton->setText(">");
     }else
     {
         totalTimeDisplayed = true;
@@ -311,6 +313,6 @@ void CountDownPage::on_totalTimeDisplayButton_clicked()
         totalTimeTitleLabel->show();
         totalTimeLeftLabel->show();
         //change icon on button to point to the left
-        totalTimeLeftButton->setArrowType(Qt::LeftArrow);
+        totalTimeLeftButton->setText("<");
     }
 }

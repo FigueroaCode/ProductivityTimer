@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QPushButton>
-#include <QToolButton>
 #include <QTimer>
 #include "mainwindow.h"
 
@@ -48,7 +47,7 @@ private:
     QLabel *countDownLabel;
     QLabel *totalTimeTitleLabel;
     QLabel *totalTimeLeftLabel;
-    QToolButton *totalTimeLeftButton;
+    QPushButton *totalTimeLeftButton;
     QPushButton *pauseResumeBtn;
     QTimer *timer;
 
