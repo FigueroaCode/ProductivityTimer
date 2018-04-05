@@ -42,7 +42,7 @@ void MainWindow::on_repsUpBtn_clicked()
      repAmount++;
      //convert to string and display it
      repsEdit->setText(QString::number(repAmount));
-
+     updateTotalTime(&totalTimeInSec);
     }catch(std::exception &e)
     {
         //value in label is not a number
@@ -62,6 +62,7 @@ void MainWindow::on_repsDownBtn_clicked()
          repAmount--;
          //convert to string and display it
          repsEdit->setText(QString::number(repAmount));
+         updateTotalTime(&totalTimeInSec);
      }
 
     }catch(std::exception &e)
@@ -70,19 +71,37 @@ void MainWindow::on_repsDownBtn_clicked()
     }
 }
 
-//------------- Helper Methods ----------------//
-void updateTimeText(QLineEdit *timeEdit,int hours, int minutes, int seconds)
+void MainWindow::on_repsEdit_editingFinished()
 {
-    timeEdit->setText(QTime(hours,minutes,seconds).toString(Qt::TextDate));
+    if(repsEdit->text().toInt() > 0)
+    {
+        updateTotalTime(&totalTimeInSec);
+    }else
+    {
+        repsEdit->setText("0");
+    }
 }
 
-void updateTimeLabel(QLabel *timeEdit,int totalTime)
+void MainWindow::on_repsEdit_returnPressed()
 {
+    if(repsEdit->text().toInt() > 0)
+    {
+        updateTotalTime(&totalTimeInSec);
+    }else
+    {
+        repsEdit->setText("0");
+    }
+}
+//------------- Helper Methods ----------------//
+void MainWindow::updateTimeLabel(int totalTime)
+{
+    //multiply total time by number of reps
+    totalTime *= repsEdit->text().toInt();
     int hours = totalTime / 3600;
     int currentTimeInSec = (totalTime) - (hours * 3600);
     int minutes = currentTimeInSec / 60;
     int seconds = currentTimeInSec - (minutes * 60);
-    timeEdit->setText(QTime(hours,minutes,seconds).toString(Qt::TextDate));
+    totalTimeLabel->setText(QTime(hours,minutes,seconds).toString(Qt::TextDate));
 }
 
 int getHours(QStringList timeList)
@@ -162,7 +181,7 @@ bool incrementTime(QLineEdit *timeEdit)
             minutes = 0;
         }
         //update time
-        updateTimeText(timeEdit,hours,minutes,seconds);
+        timeEdit->setText(QTime(hours,minutes,seconds).toString(Qt::TextDate));
         return true;
     }catch(std::exception &e)
     {
@@ -196,7 +215,7 @@ bool decrementTime(QLineEdit *timeEdit)
             return false;
         }
         //update time
-       updateTimeText(timeEdit,hours,minutes,seconds);
+       timeEdit->setText(QTime(hours,minutes,seconds).toString(Qt::TextDate));
        return true;
     }catch(std::exception &e)
     {
@@ -206,7 +225,7 @@ bool decrementTime(QLineEdit *timeEdit)
     return false;
 }
 
-void updateTotalTime(int *timeInSec, QLineEdit *workTimeEdit, QLineEdit *restTimeEdit, QLineEdit *prepTimeEdit, QLabel *totalTimeLabel)
+void MainWindow::updateTotalTime(int *timeInSec)
 {
     //Get work time text
     QString workTimeText = workTimeEdit->text();
@@ -235,7 +254,7 @@ void updateTotalTime(int *timeInSec, QLineEdit *workTimeEdit, QLineEdit *restTim
     int total = workSec + restSec + prepSec + hoursInSec + minutesInSec;
     *timeInSec = total;
     //update time label
-    updateTimeLabel(totalTimeLabel,total);
+    updateTimeLabel(total);
 }
 
 //---------------- Spin Box Events -------------------//
@@ -244,7 +263,7 @@ void MainWindow::on_workUpBtn_clicked()
     if(incrementTime(workTimeEdit))
     {
         totalTimeInSec += 60;
-        updateTimeLabel(totalTimeLabel,totalTimeInSec);
+        updateTimeLabel(totalTimeInSec);
     }
 }
 
@@ -255,7 +274,7 @@ void MainWindow::on_workDownBtn_clicked()
        if(totalTimeInSec >= 60)
        {
            totalTimeInSec -= 60;
-           updateTimeLabel(totalTimeLabel,totalTimeInSec);
+           updateTimeLabel(totalTimeInSec);
        }
    }
 }
@@ -265,7 +284,7 @@ void MainWindow::on_restUpBtn_clicked()
     if(incrementTime(restTimeEdit))
     {
         totalTimeInSec += 60;
-        updateTimeLabel(totalTimeLabel,totalTimeInSec);
+        updateTimeLabel(totalTimeInSec);
     }
 }
 
@@ -276,7 +295,7 @@ void MainWindow::on_restDownBtn_clicked()
         if(totalTimeInSec >= 60)
         {
             totalTimeInSec -= 60;
-            updateTimeLabel(totalTimeLabel,totalTimeInSec);
+            updateTimeLabel(totalTimeInSec);
         }
     }
 }
@@ -286,7 +305,7 @@ void MainWindow::on_prepUpBtn_clicked()
     if(incrementTime(prepTimeEdit))
     {
         totalTimeInSec += 60;
-        updateTimeLabel(totalTimeLabel,totalTimeInSec);
+        updateTimeLabel(totalTimeInSec);
     }
 }
 
@@ -297,7 +316,7 @@ void MainWindow::on_prepDownBtn_clicked()
         if(totalTimeInSec >= 60)
         {
             totalTimeInSec -= 60;
-            updateTimeLabel(totalTimeLabel,totalTimeInSec);
+            updateTimeLabel(totalTimeInSec);
         }
     }
 }
@@ -305,32 +324,32 @@ void MainWindow::on_prepDownBtn_clicked()
 //----------------- Line Edit input changes --------------------//
 void MainWindow::on_workTimeEdit_editingFinished()
 {
-    updateTotalTime(&totalTimeInSec,workTimeEdit,restTimeEdit,prepTimeEdit, totalTimeLabel);
+    updateTotalTime(&totalTimeInSec);
 }
 
 void MainWindow::on_workTimeEdit_returnPressed()
 {
-    updateTotalTime(&totalTimeInSec,workTimeEdit,restTimeEdit,prepTimeEdit, totalTimeLabel);
+    updateTotalTime(&totalTimeInSec);
 }
 
 void MainWindow::on_restTimeEdit_editingFinished()
 {
-    updateTotalTime(&totalTimeInSec,workTimeEdit,restTimeEdit,prepTimeEdit, totalTimeLabel);
+    updateTotalTime(&totalTimeInSec);
 }
 
 void MainWindow::on_restTimeEdit_returnPressed()
 {
-    updateTotalTime(&totalTimeInSec,workTimeEdit,restTimeEdit,prepTimeEdit, totalTimeLabel);
+    updateTotalTime(&totalTimeInSec);
 }
 
 void MainWindow::on_prepTimeEdit_editingFinished()
 {
-    updateTotalTime(&totalTimeInSec,workTimeEdit,restTimeEdit,prepTimeEdit, totalTimeLabel);
+    updateTotalTime(&totalTimeInSec);
 }
 
 void MainWindow::on_prepTimeEdit_returnPressed()
 {
-    updateTotalTime(&totalTimeInSec,workTimeEdit,restTimeEdit,prepTimeEdit, totalTimeLabel);
+    updateTotalTime(&totalTimeInSec);
 }
 //----------- Start Button -------------------//
 void MainWindow::on_startButton_clicked()
@@ -348,6 +367,7 @@ void MainWindow::on_startButton_clicked()
         countDownPage->setRestTime(restTimeEdit->text());
         countDownPage->setTotalTime(totalTimeLabel->text());
         countDownPage->setCurrentTime(prepTimeEdit->text());
+        countDownPage->setCurrentTotalTime(totalTimeLabel->text());
         //Open Window
         countDownPage->show();
     }
@@ -365,3 +385,4 @@ void MainWindow::on_actionSave_Interval_triggered()
     nw->setSaveString(timeToString);
     nw->show();
 }
+

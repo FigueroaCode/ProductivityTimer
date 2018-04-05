@@ -15,20 +15,12 @@ CountDownPage::CountDownPage(QWidget *parent) :
     titleLabel = ui->titleLabel;
     repsLabel = ui->repsLabel;
     countDownLabel = ui->countDownLabel;
+    totalTimeLeftLabel = ui->totalTimeLeftLabel;
+    totalTimeLeftButton = ui->totalTimeDisplayButton;
     pauseResumeBtn = ui->pauseResumeButton;
-    currentRestRep = 0;
-    currentWorkRep = 0;
-    currentTime = prepTime;
-    paused = false;
-    inWork = false;
-    prepDone = false;
-    //Hide reps label
-    repsLabel->setText(QString::number(currentWorkRep)+"/"+QString::number(repsCount));
-    repsLabel->hide();
-    //Set up timer to alert every second
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-    timer->start(1000);
+    totalTimeTitleLabel = ui->totalTimeLeftTitleLabel;
+    totalTimeDisplayed = true;
+    setUp();
 }
 
 CountDownPage::~CountDownPage()
@@ -38,7 +30,7 @@ CountDownPage::~CountDownPage()
 
 void CountDownPage::update()
 {
-    //take off a second from total time and update it on label
+    //take off a second from current time and update it on label
     QStringList timeList = currentTime.split(":");
     int hours = getHours(timeList);
     int minutes = getMinutes(timeList);
@@ -51,7 +43,7 @@ void CountDownPage::update()
             prepDone = true;
             repsLabel->show();
         }
-        //Check this only if currentRestRep is less than totalReps-------TODO--------
+        //Check this only if currentRestRep is less than totalReps
         if(currentRestRep < repsCount && inWork)
         {
          inWork = false;
@@ -70,7 +62,11 @@ void CountDownPage::update()
           updateRepLabel(currentWorkRep);
         }else
         {
+            //Change title to finished
+            titleLabel->setText("All Done, Great Job!");
+            repsLabel->hide();
             //handle finished state
+            timer->stop();
         }
     }else
     {
@@ -89,9 +85,37 @@ void CountDownPage::update()
             }
         }
         currentTime = QTime(hours,minutes,seconds).toString(Qt::TextDate);
+
+        //update total time
+        updateTotalTime();
     }
     //Set new time
     setCountDownText(currentTime);
+}
+
+void CountDownPage::updateTotalTime()
+{
+    //take off a second from total time and update it on label
+    QStringList timeList = currentTotalTime.split(":");
+    int hours = getHours(timeList);
+    int minutes = getMinutes(timeList);
+    int seconds = getSeconds(timeList);
+    seconds--;
+    if(seconds < 0)
+    {
+        seconds = 59;
+        minutes--;
+        if(minutes < 0 && hours > 0)
+        {
+            minutes = 59;
+            hours--;
+        }else if(minutes < 0)
+        {
+            minutes = 59;
+        }
+    }
+    currentTotalTime = QTime(hours,minutes,seconds).toString(Qt::TextDate);
+    totalTimeLeftLabel->setText(currentTotalTime);
 }
 
 //------------ Helper Methods ----------------//
@@ -205,6 +229,10 @@ void CountDownPage::setCurrentTime(QString time)
     currentTime = time;
 }
 
+void CountDownPage::setCurrentTotalTime(QString time)
+{
+    currentTotalTime = time;
+}
 //--------------------- Buttons ---------------------//
 void CountDownPage::on_pauseResumeButton_clicked()
 {//Pause or Resume Timer
@@ -227,13 +255,64 @@ void CountDownPage::on_pauseResumeButton_clicked()
 
 }
 //----------------------TODO--------------------
+void CountDownPage::setUp()
+{
+    //set current rep to 0
+    currentRestRep = 0;
+    currentWorkRep = 0;
+    //Set title to Get Ready!
+    titleLabel->setText("Get Ready!");
+    //set current time to prep time
+    currentTime = prepTime;
+    currentTotalTime = totalTime;
+    //set paused to false
+    paused = false;
+    //set inwork to false
+    inWork = false;
+    //set prep done to false
+    prepDone = false;
+    //set total time
+    totalTimeLeftLabel->setText(totalTime);
+    //Hide reps label
+    repsLabel->setText(QString::number(currentWorkRep)+"/"+QString::number(repsCount));
+    repsLabel->hide();
+    //Set up timer to alert every second
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->start(1000);
+
+}
+
 void CountDownPage::on_restartButton_clicked()
 {
     //RESTART from prep stage
+    setUp();
 }
 
 void CountDownPage::on_closeButton_clicked()
 {
     //close window
     this->close();
+}
+
+
+void CountDownPage::on_totalTimeDisplayButton_clicked()
+{
+    if(totalTimeDisplayed)
+    {
+        totalTimeDisplayed = false;
+        //currently shown, so hide it
+        totalTimeTitleLabel->hide();
+        totalTimeLeftLabel->hide();
+        //change icon on button to point to the right
+        totalTimeLeftButton->setText(">");
+    }else
+    {
+        totalTimeDisplayed = true;
+        //currently hidden, so show it
+        totalTimeTitleLabel->show();
+        totalTimeLeftLabel->show();
+        //change icon on button to point to the left
+        totalTimeLeftButton->setText("<");
+    }
 }
