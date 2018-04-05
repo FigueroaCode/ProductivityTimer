@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "countdownpage.h"
+#include "saveintervalpage.h"
 
 #include <QDebug>
 #include <QTime>
+#include <QFileDialog>
 
 CountDownPage *countDownPage = NULL;
 
@@ -353,5 +355,13 @@ void MainWindow::on_startButton_clicked()
 
 void MainWindow::on_actionSave_Interval_triggered()
 {
-    qDebug() << "should print";
+    saveIntervalPage *nw = new saveIntervalPage();
+    QString repAmount = repsEdit->text();
+    QString workTime = workTimeEdit->text();
+    QString restTime = restTimeEdit->text();
+    QString prepTime = prepTimeEdit->text();
+    QString timeToString = repAmount + ";" + workTime
+                + ";" + restTime + ";" + prepTime;
+    nw->setSaveString(timeToString);
+    nw->show();
 }

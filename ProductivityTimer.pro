@@ -25,10 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    countdownpage.cpp
+    countdownpage.cpp \
+    saveintervalpage.cpp
 
 HEADERS  += mainwindow.h \
-    countdownpage.h
+    countdownpage.h \
+    saveintervalpage.h
 
 FORMS    += mainwindow.ui \
-    countdownpage.ui
+    countdownpage.ui \
+    saveintervalpage.ui
