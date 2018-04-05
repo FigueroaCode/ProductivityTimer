@@ -50,6 +50,10 @@ private slots:
 
     void on_actionSave_Interval_triggered();
 
+    void on_repsEdit_editingFinished();
+
+    void on_repsEdit_returnPressed();
+
 private:
     Ui::MainWindow *ui;
 
@@ -62,6 +66,10 @@ private:
 
     //globals
     int totalTimeInSec;
+
+    //functions
+    void updateTimeLabel(int totalTime);
+    void updateTotalTime(int *timeInSec);
 };
 
 #endif // MAINWINDOW_H
