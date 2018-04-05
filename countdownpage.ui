@@ -21,9 +21,75 @@
     <string notr="true">background-color: #555555;
 color: white;</string>
    </property>
-   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0,0,0,0,0,0">
-    <item row="1" column="1">
-     <spacer name="horizontalSpacer_6">
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0" columnstretch="0,0,0,0,0,0,0,0">
+    <item row="11" column="7">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <spacer name="verticalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="totalTimeLeftTitleLabel">
+          <property name="font">
+           <font>
+            <pointsize>15</pointsize>
+            <underline>true</underline>
+           </font>
+          </property>
+          <property name="text">
+           <string>Total Time</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="totalTimeLeftLabel">
+          <property name="font">
+           <font>
+            <pointsize>19</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>00:00:00</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="totalTimeDisplayButton">
+        <property name="font">
+         <font>
+          <pointsize>45</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: none;
+background-color: #555555;
+color: white;</string>
+        </property>
+        <property name="text">
+         <string>&lt;</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="7">
+     <spacer name="horizontalSpacer_2">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -31,52 +97,6 @@ color: white;</string>
        <size>
         <width>40</width>
         <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="11" column="5">
-     <widget class="QLabel" name="totalTimeLeftLabel">
-      <property name="font">
-       <font>
-        <pointsize>19</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>00:00:00</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="3">
-     <widget class="QLabel" name="countDownLabel">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>77</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>00:00:00</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="3">
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
        </size>
       </property>
      </spacer>
@@ -94,15 +114,27 @@ color: white;</string>
       </property>
      </spacer>
     </item>
-    <item row="1" column="6">
-     <spacer name="horizontalSpacer_2">
+    <item row="1" column="4">
+     <widget class="QLabel" name="repsLabel">
+      <property name="font">
+       <font>
+        <pointsize>25</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>1/1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <spacer name="verticalSpacer_5">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Vertical</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
-        <width>40</width>
-        <height>20</height>
+        <width>20</width>
+        <height>40</height>
        </size>
       </property>
      </spacer>
@@ -136,73 +168,6 @@ color: white;</string>
       </property>
      </spacer>
     </item>
-    <item row="1" column="4">
-     <widget class="QLabel" name="repsLabel">
-      <property name="font">
-       <font>
-        <pointsize>25</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>1/1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="5">
-     <widget class="QLabel" name="totalTimeLeftTitleLabel">
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-        <underline>true</underline>
-       </font>
-      </property>
-      <property name="text">
-       <string>Total Time</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="4">
-     <spacer name="horizontalSpacer_5">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="1" column="5">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="9" column="5">
-     <spacer name="verticalSpacer_3">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
     <item row="1" column="3">
      <widget class="QLabel" name="titleLabel">
       <property name="sizePolicy">
@@ -223,32 +188,6 @@ color: white;</string>
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
-    </item>
-    <item row="3" column="3">
-     <spacer name="verticalSpacer_5">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="12" column="5">
-     <spacer name="verticalSpacer_4">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
     </item>
     <item row="9" column="3" rowspan="2">
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -332,20 +271,89 @@ font-size: 16px;</string>
       </item>
      </layout>
     </item>
-    <item row="10" column="6" rowspan="3">
-     <widget class="QPushButton" name="totalTimeDisplayButton">
+    <item row="12" column="5">
+     <spacer name="verticalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="1">
+     <spacer name="horizontalSpacer_6">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="5">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="11" column="3">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="6">
+     <spacer name="horizontalSpacer_5">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="3" rowspan="2">
+     <widget class="QLabel" name="countDownLabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="font">
        <font>
-        <pointsize>45</pointsize>
+        <pointsize>85</pointsize>
        </font>
       </property>
-      <property name="styleSheet">
-       <string notr="true">border: none;
-background-color: #555555;
-color: white;</string>
-      </property>
       <property name="text">
-       <string>&lt;</string>
+       <string>00:00:00</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -364,7 +372,6 @@ color: white;</string>
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="actionclose"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
