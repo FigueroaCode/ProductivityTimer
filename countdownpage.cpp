@@ -9,7 +9,7 @@ CountDownPage::CountDownPage(QWidget *parent) :
 {
     ui->setupUi(this);
     //Set the full screen on entering, optional delay
-    //QTimer::singleShot(0, this, SLOT(showFullScreen()));
+    QTimer::singleShot(0, this, SLOT(showFullScreen()));
     //Reference widgets
     //mainWindow = parent;
     titleLabel = ui->titleLabel;
@@ -27,7 +27,7 @@ CountDownPage::~CountDownPage()
 {
     delete ui;
 }
-
+///--------------TODO: Fix Restart Button -------------------///
 void CountDownPage::update()
 {
     //take off a second from current time and update it on label
@@ -286,6 +286,7 @@ void CountDownPage::setUp()
 void CountDownPage::on_restartButton_clicked()
 {
     //RESTART from prep stage
+    timer->stop();
     setUp();
 }
 
