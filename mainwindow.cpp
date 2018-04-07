@@ -5,7 +5,6 @@
 
 #include <QDebug>
 #include <QTime>
-#include <QTimer>
 #include <QFileDialog>
 #include <QDir>
 #include <QFile>
@@ -24,8 +23,11 @@ MainWindow::MainWindow(QWidget *parent) :
     prepTimeEdit = ui->prepTimeEdit;
     totalTimeLabel = ui->totalTimeLabel;
     loadIntervalMenu = ui->menuLoad_Interval;
+    removeIntervalMenu = ui->menuRemove_Interval;
 
     totalTimeInSec = 0;
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()),this,SLOT(addNewAction()));
 
     //Read the determined directory from a saved file, and then cd into it.
     savePath = readFromFile(QDir::homePath()+"/StateInfo/Directory_Path.txt");
@@ -37,12 +39,9 @@ MainWindow::MainWindow(QWidget *parent) :
         QStringList dirs = intervalDir.entryList(QDir::Files | QDir::NoDotAndDotDot);
         for(int i = 0; i < dirs.size(); i++)
         {
-            addIntervalAction(dirs.at(i));
+            addIntervalAction(true,dirs.at(i));
+            addIntervalAction(false,dirs.at(i));
         }
-        //check every 2 seconds if a new file should be added
-        QTimer *timer = new QTimer(this);
-        connect(timer, SIGNAL(timeout()),this,SLOT(addNewAction()));
-        timer->start(2000);
     }
 }
 
@@ -61,7 +60,8 @@ void MainWindow::addNewAction()
         //get the last file, and check if its the same as the current last action interval
         if(dirs.size() > 0 && lastIntervalAction != dirs.at(dirs.size()-1))
         {
-            addIntervalAction(dirs.at(dirs.size()-1));
+            addIntervalAction(true,dirs.at(dirs.size()-1));
+            addIntervalAction(false,dirs.at(dirs.size()-1));
         }
     }
 }
@@ -140,7 +140,7 @@ QString MainWindow::readFromFile(QString path)
     return text;
 }
 
-void MainWindow::addIntervalAction(QString fileName)
+void MainWindow::addIntervalAction(bool load,QString fileName)
 {
     QAction *intervalAction = new QAction(this);
      //get a substring of the file name without the .txt portion
@@ -150,9 +150,39 @@ void MainWindow::addIntervalAction(QString fileName)
     QVariant v = qVariantFromValue(name);
     intervalAction->setData(v);
     //set trigger function for this action
-    QObject::connect(intervalAction,SIGNAL(triggered(bool)), this, SLOT(updateInterval()));
-    loadIntervalMenu->addAction(intervalAction);
+    if(load)
+    {
+        QObject::connect(intervalAction,SIGNAL(triggered(bool)), this, SLOT(updateInterval()));
+        loadIntervalMenu->addAction(intervalAction);
+    }else
+    {
+        QObject::connect(intervalAction,SIGNAL(triggered(bool)), this, SLOT(removeInterval()));
+        removeIntervalMenu->addAction(intervalAction);
+    }
     lastIntervalAction = fileName;
+}
+
+void MainWindow::removeInterval()
+{
+    if(removeIntervalMenu->actions().size() > 0 && loadIntervalMenu->actions().size() > 0)
+    {
+        QAction *intervalAction = qobject_cast<QAction *>(sender());
+        QVariant v = intervalAction->data();
+        QString fileName = (QString) v.value<QString>();
+        //remove from menus
+        //find action in load menu
+        int actionIndex = removeIntervalMenu->actions().indexOf(intervalAction);
+        loadIntervalMenu->removeAction(loadIntervalMenu->actions().at(actionIndex));
+        removeIntervalMenu->removeAction(intervalAction);
+        //update lastIntervalAction
+        if(removeIntervalMenu->actions().size() > 0 && loadIntervalMenu->actions().size() > 0)
+        {
+            lastIntervalAction = removeIntervalMenu->actions().at(removeIntervalMenu->actions().size() - 1)->text() + ".txt";
+        }
+        //delete file
+        QFile intervalFile(savePath+"/"+fileName+".txt");
+        intervalFile.remove();
+    }
 }
 
 void MainWindow::updateInterval()
@@ -462,6 +492,7 @@ void MainWindow::on_startButton_clicked()
 
 void MainWindow::on_actionSave_Interval_triggered()
 {
+    timer->stop();
     saveIntervalPage *nw = new saveIntervalPage();
     QString repAmount = repsEdit->text();
     QString workTime = workTimeEdit->text();
@@ -471,6 +502,8 @@ void MainWindow::on_actionSave_Interval_triggered()
                 + ";" + restTime + ";" + prepTime;
     nw->setSaveString(timeToString);
     nw->show();
+    //check every 2 seconds if a new file should be added
+    timer->start(2000);
 }
 
 

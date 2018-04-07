@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QAction>
 #include <QMenu>
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
@@ -17,13 +18,14 @@ class MainWindow : public QMainWindow
 
 public:
     QString readFromFile(QString path);
-    void addIntervalAction(QString);
+    void addIntervalAction(bool,QString);
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
 public slots:
     void addNewAction();
     void updateInterval();
+    void removeInterval();
 
 private slots:
     void on_repsUpBtn_clicked();
@@ -73,11 +75,13 @@ private:
     QLineEdit *prepTimeEdit;
     QLabel *totalTimeLabel;
     QMenu *loadIntervalMenu;
+    QMenu *removeIntervalMenu;
 
     //globals
     int totalTimeInSec;
     QString savePath;
     QString lastIntervalAction;
+    QTimer *timer;
 
     //functions
     void updateTimeLabel(int totalTime);

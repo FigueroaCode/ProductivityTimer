@@ -467,8 +467,15 @@ font-size: 16px;
       <string>Load Interval</string>
      </property>
     </widget>
+    <widget class="QMenu" name="menuRemove_Interval">
+     <property name="title">
+      <string>Remove Interval</string>
+     </property>
+    </widget>
     <addaction name="actionSave_Interval"/>
     <addaction name="menuLoad_Interval"/>
+    <addaction name="separator"/>
+    <addaction name="menuRemove_Interval"/>
    </widget>
    <addaction name="menuSave_Interval"/>
   </widget>
@@ -487,6 +494,11 @@ font-size: 16px;
    </property>
   </action>
   <action name="actiontest">
+   <property name="text">
+    <string>test</string>
+   </property>
+  </action>
+  <action name="actiontest_2">
    <property name="text">
     <string>test</string>
    </property>
