@@ -21,30 +21,52 @@ saveIntervalPage::~saveIntervalPage()
 void saveIntervalPage::on_saveButton_clicked()
 {
     if(this->intervalName->text() != ""){
+        QDir dir(QDir::homePath());
+        QString savePath = "";
         QString dirName = "Productivity Intervals";
-        QString filepath = QFileDialog::getExistingDirectory(
-                    this,
-                    "Select Directory",
-                    QDir::homePath());
 
-        //Find the time values currently in place and store them
+        //Check if a save directory has already been established.
+        if(!dir.exists("StateInfo"))
+        {
+            QString filepath = QFileDialog::getExistingDirectory(
+                        this,
+                        "Select Directory",
+                        QDir::homePath());
 
-        //make folder to save Intervals in directory chosen
-        QDir dir(filepath);
-        if(!dir.exists()){
-            dir.mkpath(".");
-        }else{
-            //Make Folder
-            if(!dir.exists(dirName)){
-                dir.mkdir(dirName);
+            //make folder to save Intervals in directory chosen
+            QDir dir(filepath);
+            if(!dir.exists())
+            {
+                dir.mkpath(".");
+            }else{
+                //Make Folder
+                if(!dir.exists(dirName)){
+                    dir.mkdir(dirName);
+                }
             }
+
+            //New dir for creating files will be savePath
+            savePath = filepath + "/" + dirName;
+            dir.cd(savePath);
+
+            //Save this directory for future use.
+            QFile file(QDir::homePath()+"/StateInfo/Directory_Path.txt");
+            if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream out(&file);
+                out << savePath;
+            }
+            file.close();
+        }else{
+            //Read the determined directory from a saved file, and then cd into it.
+            QFile file(QDir::homePath()+"/StateInfo/Directory_Path.txt");
+            file.open(QIODevice::ReadOnly | QIODevice::Text);
+            QTextStream in(&file);
+            savePath = in.readLine();
+            file.close();
+
+            //cd into savePath directory
+            dir.cd(savePath);
         }
-
-        //New dir for creating files will be filepath
-        QString savePath = filepath + "/" + dirName;
-        dir.cd(savePath);
-
-        //TODO: Save this directory for future use.
 
         //Write a new file that stores the interval as text
         QFile file(savePath + "/" + intervalName->text() + ".txt");
