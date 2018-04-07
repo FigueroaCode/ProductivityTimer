@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QLineEdit>
 #include <QLabel>
+#include <QAction>
+#include <QMenu>
 
 namespace Ui {
 class MainWindow;
@@ -14,8 +16,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    QString readFromFile(QString path);
+    void addIntervalAction(QString);
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+public slots:
+    void addNewAction();
+    void updateInterval();
 
 private slots:
     void on_repsUpBtn_clicked();
@@ -54,6 +62,7 @@ private slots:
 
     void on_repsEdit_returnPressed();
 
+
 private:
     Ui::MainWindow *ui;
 
@@ -63,9 +72,12 @@ private:
     QLineEdit *restTimeEdit;
     QLineEdit *prepTimeEdit;
     QLabel *totalTimeLabel;
+    QMenu *loadIntervalMenu;
 
     //globals
     int totalTimeInSec;
+    QString savePath;
+    QString lastIntervalAction;
 
     //functions
     void updateTimeLabel(int totalTime);

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>645</width>
-    <height>426</height>
+    <height>433</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -462,8 +462,13 @@ font-size: 16px;
     <property name="title">
      <string>Menu</string>
     </property>
+    <widget class="QMenu" name="menuLoad_Interval">
+     <property name="title">
+      <string>Load Interval</string>
+     </property>
+    </widget>
     <addaction name="actionSave_Interval"/>
-    <addaction name="actionLoad_Interval"/>
+    <addaction name="menuLoad_Interval"/>
    </widget>
    <addaction name="menuSave_Interval"/>
   </widget>
@@ -481,9 +486,9 @@ font-size: 16px;
     <string>Save Interval</string>
    </property>
   </action>
-  <action name="actionLoad_Interval">
+  <action name="actiontest">
    <property name="text">
-    <string>Load Interval</string>
+    <string>test</string>
    </property>
   </action>
  </widget>

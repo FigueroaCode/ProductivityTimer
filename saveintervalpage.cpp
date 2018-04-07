@@ -23,7 +23,7 @@ void saveIntervalPage::on_saveButton_clicked()
     if(this->intervalName->text() != ""){
         QDir dir(QDir::homePath());
         QString savePath = "";
-        QString dirName = "Productivity Intervals";
+        QString dirName = "Productivity_Intervals";
 
         //Check if a save directory has already been established.
         if(!dir.exists("StateInfo"))
@@ -34,23 +34,24 @@ void saveIntervalPage::on_saveButton_clicked()
                         QDir::homePath());
 
             //make folder to save Intervals in directory chosen
-            QDir dir(filepath);
-            if(!dir.exists())
+            QDir newDir(filepath);
+            if(!newDir.exists())
             {
-                dir.mkpath(".");
+                newDir.mkpath(".");
             }else{
                 //Make Folder
-                if(!dir.exists(dirName)){
-                    dir.mkdir(dirName);
+                if(!newDir.exists(dirName)){
+                    newDir.mkdir(dirName);
                 }
             }
 
             //New dir for creating files will be savePath
             savePath = filepath + "/" + dirName;
-            dir.cd(savePath);
+            //make state info dir to store file
+            dir.mkdir("StateInfo");
 
             //Save this directory for future use.
-            QFile file(QDir::homePath()+"/StateInfo/Directory_Path.txt");
+            QFile file(QDir::homePath()+"/StateInfo/Directory_Path.txt");//will make the file if it doesn't exist
             if (file.open(QIODevice::WriteOnly | QIODevice::Text)){
                 QTextStream out(&file);
                 out << savePath;
@@ -67,7 +68,12 @@ void saveIntervalPage::on_saveButton_clicked()
             //cd into savePath directory
             dir.cd(savePath);
         }
-
+        //In case user deletes project folder, make a new one
+        QDir projectPath(savePath);
+        if(!projectPath.exists())
+        {
+            projectPath.mkdir(savePath);
+        }
         //Write a new file that stores the interval as text
         QFile file(savePath + "/" + intervalName->text() + ".txt");
         if( file.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -76,7 +82,8 @@ void saveIntervalPage::on_saveButton_clicked()
         }
 
         file.close();
-        this->hide();
+
+        this->close();
     }else{
         QMessageBox::information(this,tr("Error"),tr("Please enter a name for this interval"));
     }
@@ -85,7 +92,7 @@ void saveIntervalPage::on_saveButton_clicked()
 
 void saveIntervalPage::on_cancelButton_clicked()
 {
-    this->hide();
+    this->close();
 }
 
 void saveIntervalPage::setSaveString(QString saveString)

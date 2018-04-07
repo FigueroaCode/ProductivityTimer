@@ -5,7 +5,10 @@
 
 #include <QDebug>
 #include <QTime>
+#include <QTimer>
 #include <QFileDialog>
+#include <QDir>
+#include <QFile>
 
 CountDownPage *countDownPage = NULL;
 
@@ -20,8 +23,27 @@ MainWindow::MainWindow(QWidget *parent) :
     restTimeEdit = ui->restTimeEdit;
     prepTimeEdit = ui->prepTimeEdit;
     totalTimeLabel = ui->totalTimeLabel;
+    loadIntervalMenu = ui->menuLoad_Interval;
 
     totalTimeInSec = 0;
+
+    //Read the determined directory from a saved file, and then cd into it.
+    savePath = readFromFile(QDir::homePath()+"/StateInfo/Directory_Path.txt");
+    //cd into savePath directory
+    QDir intervalDir(savePath);
+    //Load the interval files into the menu
+    if(intervalDir.exists())
+    {
+        QStringList dirs = intervalDir.entryList(QDir::Files | QDir::NoDotAndDotDot);
+        for(int i = 0; i < dirs.size(); i++)
+        {
+            addIntervalAction(dirs.at(i));
+        }
+        //check every 2 seconds if a new file should be added
+        QTimer *timer = new QTimer(this);
+        connect(timer, SIGNAL(timeout()),this,SLOT(addNewAction()));
+        timer->start(2000);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -29,6 +51,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::addNewAction()
+{
+    QDir intervalDir(savePath);
+    //Load the interval files into the menu
+    if(intervalDir.exists())
+    {
+        QStringList dirs = intervalDir.entryList(QDir::Files | QDir::NoDotAndDotDot);
+        //get the last file, and check if its the same as the current last action interval
+        if(dirs.size() > 0 && lastIntervalAction != dirs.at(dirs.size()-1))
+        {
+            addIntervalAction(dirs.at(dirs.size()-1));
+        }
+    }
+}
 //------ Rep spinner ---------//
 
 void MainWindow::on_repsUpBtn_clicked()
@@ -93,6 +129,57 @@ void MainWindow::on_repsEdit_returnPressed()
     }
 }
 //------------- Helper Methods ----------------//
+QString MainWindow::readFromFile(QString path)
+{
+    QFile file(path);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&file);
+    QString text = in.readLine();
+    file.close();
+
+    return text;
+}
+
+void MainWindow::addIntervalAction(QString fileName)
+{
+    QAction *intervalAction = new QAction(this);
+     //get a substring of the file name without the .txt portion
+    QString name = fileName.left(fileName.lastIndexOf("."));
+    intervalAction->setText(name);
+    //Convert data into variant in order to access it in the update interval function
+    QVariant v = qVariantFromValue(name);
+    intervalAction->setData(v);
+    //set trigger function for this action
+    QObject::connect(intervalAction,SIGNAL(triggered(bool)), this, SLOT(updateInterval()));
+    loadIntervalMenu->addAction(intervalAction);
+    lastIntervalAction = fileName;
+}
+
+void MainWindow::updateInterval()
+{
+    QAction *intervalAction = qobject_cast<QAction *>(sender());
+    QVariant v = intervalAction->data();
+    QString fileName = (QString) v.value<QString>();
+    //read from file the interval
+    QString interval = readFromFile(savePath+"/"+fileName+".txt");
+    if(interval.size() > 0)
+    {
+        QStringList intervalTimes = interval.split(";");
+        //set the current time for all the widgets
+        QList<QLineEdit*> timeEdits;
+        timeEdits.append(repsEdit);
+        timeEdits.append(workTimeEdit);
+        timeEdits.append(restTimeEdit);
+        timeEdits.append(prepTimeEdit);
+        for(int i = 0; i < intervalTimes.size(); i++)
+        {
+            timeEdits.at(i)->setText(intervalTimes.at(i));
+        }
+        //update total time
+        updateTotalTime(&totalTimeInSec);//this is just passed in to keep it updated globally
+    }
+}
+
 void MainWindow::updateTimeLabel(int totalTime)
 {
     //multiply total time by number of reps
@@ -385,4 +472,5 @@ void MainWindow::on_actionSave_Interval_triggered()
     nw->setSaveString(timeToString);
     nw->show();
 }
+
 

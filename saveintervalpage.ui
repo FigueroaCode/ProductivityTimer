@@ -32,7 +32,8 @@ color: white;
    <item>
     <widget class="QLineEdit" name="intervalNameEdit">
      <property name="styleSheet">
-      <string notr="true">background-color: white;</string>
+      <string notr="true">background-color: white;
+color: black;</string>
      </property>
     </widget>
    </item>
